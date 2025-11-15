@@ -1,0 +1,9 @@
+{
+  "name": "FakeBoost",
+  "version": "1.0",
+  "description": "Simule l'apparence d'un Boost de serveur Nitro, permettant des icônes et bannières personnalisées sans abonnement.",
+  "authors": ["Script1-afk"],
+  "main": "com.example.FakeBoost",
+  "hash": 0,
+  "license": "MIT"
+}

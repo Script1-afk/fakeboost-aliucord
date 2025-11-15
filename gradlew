@@ -1,3 +1,5 @@
+export JAVA_HOME="/data/data/com.termux/files/usr/lib/jvm/openjdk-17"
+
 #!/bin/sh
 
 #
@@ -231,4 +233,5 @@ eval "set -- $(
         tr '\n' ' '
     )" '"$@"'
 
-exec "$JAVACMD" "$@"
+JAVACMD="/data/data/com.termux/files/usr/lib/jvm/openjdk-17/bin/java"
+
