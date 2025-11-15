@@ -18,3 +18,4 @@ This template includes 2 example plugins demonstrating commands and patches whic
 ## License
 
 Everything in this repo is released into the public domain. You may use it however you want with no conditions whatsoever
+Nouvelle ligne de test pour forcer le cache
