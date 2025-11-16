@@ -4,28 +4,31 @@ on:
   push:
     branches:
       - main
+      - fix/* # Permet de compiler votre branche de correction (fix/...)
     paths-ignore:
       - '*.md'
-  workflow_dispatch:
+  workflow_dispatch: # Permet de lancer la compilation manuellement
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Ajouté pour s'assurer que l'action a les permissions nécessaires
+      contents: write
+
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Plugin Source Code
         uses: actions/checkout@v4
         with:
           path: "src"
-
+          
       - name: Checkout Aliucord Dependencies
         uses: actions/checkout@v4
         with:
           repository: "Aliucord/Aliucord"
-          ref: "master" # Assurez-vous d'utiliser la branche de dépendance stable
+          ref: "main" # Correction : Utilise la branche standard 'main'
           path: "repo"
-          
+          token: ${{ secrets.GITHUB_TOKEN }} # Correction : Assure les droits d'accès
+
       - name: Setup JDK 11
         uses: actions/setup-java@v4
         with:
@@ -40,12 +43,14 @@ jobs:
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
           ./gradlew make generateUpdaterJson
+          
+          # Préparer le dossier pour les artefacts
           mkdir -p $GITHUB_WORKSPACE/artifacts
           cp **/build/*.zip $GITHUB_WORKSPACE/artifacts
-          
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: FakeBoost-Plugin-V1
           path: artifacts/
-          retention-days: 7 
+          retention-days: 7
