@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - fix/* # Permet de compiler vos branches de correction
+      - fix/*
     paths-ignore:
       - '*.md'
-  workflow_dispatch: # Permet de lancer la compilation manuellement
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,39 +16,47 @@ jobs:
       contents: write
 
     steps:
+      # 1. Checkout du code source du plugin
       - name: Checkout Plugin Source Code
         uses: actions/checkout@v4
         with:
           path: "src"
           
+      # 2. Checkout des dépendances Aliucord
       - name: Checkout Aliucord Dependencies
         uses: actions/checkout@v4
         with:
           repository: "Aliucord/Aliucord"
-          ref: "main" # Utilise la branche standard 'main'
+          ref: "main" # Assurez-vous que l'accès aux dépendances est correct
           path: "repo"
-          token: ${{ secrets.GITHUB_TOKEN }} # Assure les droits d'accès
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      # 3. Configuration de l'environnement Java
       - name: Setup JDK 11
         uses: actions/setup-java@v4
         with:
           java-version: 11
           distribution: temurin
 
+      # 4. Configuration de Gradle
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # 5. Compilation du Plugin (LA VRAIE CORRECTION)
       - name: Build Plugins
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          # Correction du JAVA_HOME : Force Gradle à ignorer l'ancienne variable Termux
-          ./gradlew make generateUpdaterJson -Dorg.gradle.java.home=""
+          
+          # Contournement définitif : Exécuter la commande Gradle avec la variable JAVA_HOME forcée à vide.
+          # Ceci empêche la lecture du chemin Termux persistant.
+          JAVA_HOME="" ./gradlew make generateUpdaterJson
           
           # Préparer le dossier pour les artefacts
           mkdir -p $GITHUB_WORKSPACE/artifacts
           cp **/build/*.zip $GITHUB_WORKSPACE/artifacts
 
+      # 6. Création de l'Artefact téléchargeable
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
