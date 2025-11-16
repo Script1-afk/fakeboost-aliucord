@@ -1,7 +1,20 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://maven.aliucord.com/snapshots")
+        maven("https://jitpack.io")
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+        classpath("com.aliucord.gradle:gradle-plugin:main-SNAPSHOT")
+    }
+}
+
 plugins {
-    id("com.android.library") version "7.0.4"
-    id("org.jetbrains.kotlin.android") version "1.5.21"
-    id("com.aliucord.gradle") version "main-SNAPSHOT"
+    kotlin("android") version "1.5.21" apply false
 }
 
 repositories {
@@ -13,6 +26,10 @@ repositories {
 
 group = "com.yourusername.plugins"
 version = "1.0.0"
+
+apply(plugin = "com.android.library")
+apply(plugin = "org.jetbrains.kotlin.android")
+apply(plugin = "com.aliucord.gradle")
 
 android {
     compileSdk = 31
